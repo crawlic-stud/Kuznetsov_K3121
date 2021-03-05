@@ -1,21 +1,21 @@
 import pathlib
 import random
+import typing as tp
 
-from typing import List, Optional, Tuple
+import pygame
+from pygame.locals import *
 
-
-Cell = Tuple[int, int]
-Cells = List[int]
-Grid = List[Cells]
+Cell = tp.Tuple[int, int]
+Cells = tp.List[int]
+Grid = tp.List[Cells]
 
 
 class GameOfLife:
-    
     def __init__(
         self,
-        size: Tuple[int, int],
-        randomize: bool=True,
-        max_generations: Optional[float]=float('inf')
+        size: tp.Tuple[int, int],
+        randomize: bool = True,
+        max_generations: tp.Optional[float] = float("inf"),
     ) -> None:
         # Размер клеточного поля
         self.rows, self.cols = size
@@ -28,47 +28,92 @@ class GameOfLife:
         # Текущее число поколений
         self.generations = 1
 
-    def create_grid(self, randomize: bool=False) -> Grid:
-        # Copy from previous assignment
-        pass
+
+
+    def create_grid(self, randomize: bool = False) -> Grid:
+
+        grid = [[0] * self.cols for x in range(self.rows)]
+        if randomize:
+            for i in range(self.cols):
+                for j in range(self.rows):
+                    grid[i][j] = random.randint(0, 1)
+        return grid
+
 
     def get_neighbours(self, cell: Cell) -> Cells:
-        # Copy from previous assignment
-        pass
+        # only alive neighbours
+        cells = []
+        x, y = cell
+        for i in range(max(x-1, 0), min(self.rows, x+2)):
+            for j in range(max(0, y-1), min(self.cols, y+2)):
+                try:
+                    if self.curr_generation[i][j]:
+                        cells.append((i, j))
+                    elif self.curr_generation[i][j] == 0:
+                        cells.append((i, j))
+                except:
+                    pass
+        cells.remove((x, y))
+        return cells
 
     def get_next_generation(self) -> Grid:
-        # Copy from previous assignment
-        pass
+        new = self.curr_generation
+        for i in range(len(self.curr_generation)):
+            for j in range(len(self.curr_generation[i])):
+                if self.curr_generation[i][j] == 0:
+                    if len(self.get_neighbours((i, j))) == 3:
+                        new[i][j] = 1
+                else:
+                    if len(self.get_neighbours((i, j))) not in [2, 3]:
+                        new[i][j] = 0
+        self.curr_generation = new
+        return new
 
     def step(self) -> None:
-        """
-        Выполнить один шаг игры.
-        """
+        self.prev_generation = self.curr_generation
+        self.curr_generation = self.get_next_generation()
+        self.generations += 1
         pass
 
     @property
     def is_max_generations_exceeded(self) -> bool:
-        """
-        Не превысило ли текущее число поколений максимально допустимое.
-        """
-        pass
+        if self.generations == self.max_generations:
+            return True
+        return False
+
 
     @property
     def is_changing(self) -> bool:
-        """
-        Изменилось ли состояние клеток с предыдущего шага.
-        """
+        if self.curr_generation != self.prev_generation:
+            return True
+        return False
         pass
 
     @staticmethod
-    def from_file(filename: pathlib.Path) -> 'GameOfLife':
-        """
-        Прочитать состояние клеток из указанного файла.
-        """
+    def from_file(filename: pathlib.Path) -> "GameOfLife":
+        file = open(filename)
+        grid = []
+        final = []
+        cells = file.read()
+        for i in cells:
+            try:
+                grid.append(int(i))
+            except:
+                final.append(grid)
+                grid = []
+                continue
+        if [] in final:
+            final.remove([])
+        return final
+
+
+    def save(self, filename: pathlib.Path) -> None:
+        file = open(filename, 'w')
+        for i in range(len(self.curr_generation)):
+            file.write(str(self.curr_generation[i]) + "/n")
+        file.close()
         pass
 
-    def save(filename: pathlib.Path) -> None:
-        """
-        Сохранить текущее состояние клеток в указанный файл.
-        """
-        pass
+game = GameOfLife((10, 10), True, 5)
+print(game.from_file('glider.txt'))
+print(game.from_file('grid.txt'))
