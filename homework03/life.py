@@ -115,5 +115,5 @@ class GameOfLife:
         pass
 
 game = GameOfLife((10, 10), True, 5)
-print(game.from_file('glider.txt'))
-print(game.from_file('grid.txt'))
+#print(game.from_file('glider.txt'))
+#print(game.from_file('grid.txt'))
