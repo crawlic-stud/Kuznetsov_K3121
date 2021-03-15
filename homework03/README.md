@@ -1,7 +1,6 @@
-Запустить тесты можно так:
+Результаты тестов:
 
 ```
-python -m unittest discover
 test_can_create_a_random_grid (test_life.TestGameOfLife) ... ok
 test_can_create_an_empty_grid (test_life.TestGameOfLife) ... ok
 test_can_update (test_life.TestGameOfLife) ... ok
@@ -20,10 +19,9 @@ test_is_not_changing (test_life.TestGameOfLife) ... ok
 test_prev_generation_is_correct (test_life.TestGameOfLife) ... ok
 
 ----------------------------------------------------------------------
-Ran 16 tests in 0.026s
+Ran 16 tests in 0.034s
 
 OK
-
 test_can_create_a_random_grid (test_life_proto.TestGameOfLife) ... ok
 test_can_create_an_empty_grid (test_life_proto.TestGameOfLife) ... ok
 test_can_update (test_life_proto.TestGameOfLife) ... ok
@@ -38,13 +36,14 @@ test_get_neighbours_for_upper_right_corner (test_life_proto.TestGameOfLife) ... 
 test_get_neighbours_for_upper_side (test_life_proto.TestGameOfLife) ... ok
 
 ----------------------------------------------------------------------
-Ran 12 tests in 1.015s
+Ran 12 tests in 0.438s
 
 OK
 ............................
 ----------------------------------------------------------------------
-Ran 28 tests in 0.047s
+Ran 28 tests in 0.019s
 
 OK
+
 ```
 
