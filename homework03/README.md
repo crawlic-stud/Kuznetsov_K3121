@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 Результаты тестов:
+=======
+
+>>>>>>> 27198f3cadd2a9d07ac83dd73dd5d007030fff23
 
 ```
 test_can_create_a_random_grid (test_life.TestGameOfLife) ... ok
