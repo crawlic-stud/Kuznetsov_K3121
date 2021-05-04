@@ -1,5 +1,6 @@
 import os
 import shutil
+import pyvcs
 
 def repo_create(path='.'):
     try:
@@ -17,9 +18,11 @@ def repo_create(path='.'):
         os.chdir('refs')
         os.mkdir('heads')
         os.mkdir('tags')
+        return 'success!'
     except FileExistsError:
         shutil.rmtree('.git')
+        return 'try again'
 
-print(repo_create(), 'Done')
+print(repo_create())
 
 
