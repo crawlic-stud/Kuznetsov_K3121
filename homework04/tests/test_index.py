@@ -4,8 +4,9 @@ import unittest
 from pyfakefs.fake_filesystem_unittest import TestCase
 
 import pyvcs
-from pyvcs.index import GitIndexEntry, read_index, update_index, write_index
 from pyvcs.repo import repo_create
+from pyvcs.index import GitIndexEntry, read_index, update_index, write_index
+
 
 
 @unittest.skipIf(pyvcs.__version_info__ < (0, 4, 0), "Нужна версия пакета 0.4.0 и выше")
