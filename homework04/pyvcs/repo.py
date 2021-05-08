@@ -4,26 +4,31 @@ import typing as tp
 
 
 def repo_find(workdir: tp.Union[str, pathlib.Path] = ".") -> pathlib.Path:
-    # PUT YOUR CODE HERE
-    ...
+    git_dir = os.getenv("GIT_DIR", default=".pyvcs")
+    workdir = pathlib.Path(workdir)
+    while pathlib.Path("/") != workdir.absolute():
+        if (workdir / git_dir).is_dir():
+            return workdir / git_dir
+        workdir = workdir.parent
+    if (workdir / git_dir).is_dir():
+        return workdir / git_dir
+    else:
+        raise Exception("Not a git repository")
 
 
 def repo_create(workdir: tp.Union[str, pathlib.Path]) -> pathlib.Path:
-    os.chdir(workdir)
-    os.mkdir('.git')
-    os.chdir('.git')
-    file = open('HEAD', 'w')
-    file.write("ref: refs/heads/master\n")
-    file = open('config', 'w')
-    file.write(
-        "[core]\n\trepositoryformatversion = 0\n\tfilemode = true\n\tbare = false\n\tlogallrefupdates = false\n")
-    file = open('description', 'w')
-    file.write("Unnamed pyvcs repository")
-    os.mkdir('refs')
-    os.mkdir('objects')
-    os.chdir('refs')
-    os.mkdir('heads')
-    os.mkdir('tags')
-    pass
-
+    git_dir = os.getenv("GIT_DIR", default=".pyvcs")
+    workdir = pathlib.Path(workdir)
+    if workdir.is_file():
+        raise Exception(f"{workdir} is not a directory")
+    os.makedirs(workdir / git_dir / "refs" / "heads", exist_ok=True)
+    os.makedirs(workdir / git_dir / "refs" / "tags", exist_ok=True)
+    (workdir / git_dir / "objects").mkdir()
+    with open(workdir / git_dir / "config", "w") as f:
+        f.write("[core]\n\trepositoryformatversion = 0\n\tfilemode = true\n\tbare = false\n\tlogallrefupdates = false\n",)
+    with open(workdir / git_dir / "HEAD", "w") as f:
+        f.write("ref: refs/heads/master\n")
+    with open(workdir / git_dir / "description", "w") as f:
+        f.write("Unnamed pyvcs repository.\n")
+    return workdir / git_dir
 
