@@ -21,9 +21,9 @@ def repo_create(workdir: tp.Union[str, pathlib.Path]) -> pathlib.Path:
     workdir = pathlib.Path(workdir)
     if workdir.is_file():
         raise Exception(f"{workdir} is not a directory")
-    os.makedirs(workdir / git_dir / "refs" / "heads")
-    os.makedirs(workdir / git_dir / "refs" / "tags")
-    (workdir / git_dir / "objects").mkdir()
+    os.makedirs(workdir / git_dir / "refs" / "heads", exist_ok=True)
+    os.makedirs(workdir / git_dir / "refs" / "tags", exist_ok=True)
+    (workdir / git_dir / "objects").mkdir(exist_ok=True)
     with open(workdir / git_dir / "config", "w") as f:
         f.write("[core]\n\trepositoryformatversion = 0\n\tfilemode = true\n\tbare = false\n\tlogallrefupdates = false\n",)
     with open(workdir / git_dir / "HEAD", "w") as f:

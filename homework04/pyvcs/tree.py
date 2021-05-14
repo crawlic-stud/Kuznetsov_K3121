@@ -1,8 +1,8 @@
-import os
 import pathlib
 import stat
 import time
 import typing as tp
+import os
 
 from pyvcs.index import GitIndexEntry, read_index
 from pyvcs.objects import hash_object
@@ -23,7 +23,19 @@ def write_tree(gitdir: pathlib.Path, index: tp.List[GitIndexEntry], dirname: str
             subtrees[dname].append(entry)
     for name in subtrees:
         stat = (gitdir.parent / dirname / name).stat()
-        tree_content.append((0o40000, gitdir.parent / dirname / name, bytes.fromhex(write_tree(gitdir, subtrees[name], dirname + "/" + name if dirname != "" else name,)),))
+        tree_content.append(
+            (
+                0o40000,
+                gitdir.parent / dirname / name,
+                bytes.fromhex(
+                    write_tree(
+                        gitdir,
+                        subtrees[name],
+                        dirname + "/" + name if dirname != "" else name,
+                    )
+                ),
+            )
+        )
     tree_content.sort(key=lambda x: x[1])
     data = b"".join(
         f"{elem[0]:o} {elem[1].name}".encode() + b"\00" + elem[2] for elem in tree_content
