@@ -24,7 +24,7 @@ Base.metadata.create_all(bind=engine)
 
 
 if __name__ == "__main__":
-    news_list = get_news("https://news.ycombinator.com/newest", n_pages=20)
+    news_list = get_news("https://news.ycombinator.com/newest", n_pages=1)
     length = len(news_list)
     s = session()
     for i in range(length):

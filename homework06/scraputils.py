@@ -101,9 +101,9 @@ for i in total_subtexts:
     x += 1
     print(x, 'out of', len(total_subtexts))
     print(subtext(i))
-"""
+
 
 print(get_news('https://news.ycombinator.com', 3))
-
+"""
 
 
